@@ -73,6 +73,30 @@ const diamondsObjectNames2 = [
     'splints_32',
 
 ]
+const metalObjectNames2 = [
+    'metal',
+    'metal_1',
+    'metal_2',
+    'metal_3',
+    'metal_4',
+    'metal_5',
+    'metal_6',
+    'metal_7',
+    'metal_8',
+    'metal_9',
+    'metal_10',
+    'metal_11',
+    'metal_12',
+    'metal_13',
+    'metal_14',
+    'metal_15',
+    'metal_16',
+    'metal_17',
+    'metal_18',
+    'metal_19',
+    'metal_20'
+
+]
 
 let usingCustomColors = false
 
@@ -176,7 +200,8 @@ async function setupViewer() {
     await manager.addFromPath("./assets/ring_webgi.glb")
 
     let ring: Mesh<BufferGeometry, MeshStandardMaterial2>, gold: Mesh<BufferGeometry, MeshStandardMaterial2>, silver: Mesh<BufferGeometry, MeshStandardMaterial2>
-    let diamondObjects: any[] = []
+    let diamondObjects: any[] = [];
+    let metalObjects: any[] = [];
 
 
     if (ringModel == 1) {
@@ -191,17 +216,20 @@ async function setupViewer() {
         ring = viewer.scene.findObjectsByName('metal_20')[0] as any as Mesh<BufferGeometry, MeshStandardMaterial2>
         silver = viewer.scene.findObjectsByName('metal_16')[0] as any as Mesh<BufferGeometry, MeshStandardMaterial2>
         gold = viewer.scene.findObjectsByName('metal_17')[0] as any as Mesh<BufferGeometry, MeshStandardMaterial2>
+        
         for (const obj of diamondsObjectNames2) {
             const o = viewer.scene.findObjectsByName(obj)[0]
             diamondObjects.push(o)
         }
-        ring.rotation.set(Math.PI / 2, 0.92, 0)
+        ring?.rotation.set(Math.PI / 2, 0.92, 0)
     }
 
 
     if (camera.controls) {
         camera.controls!.enabled = false
     }
+
+    await loadNewModel();
 
     // WEBGi mobile adjustments
     if (isMobile) {
@@ -212,7 +240,7 @@ async function setupViewer() {
 
     window.scrollTo(0, 0)
 
-    await timeout(50)
+    await timeout(1000)
 
     function introAnimation() {
         firstLooad = false
@@ -246,17 +274,17 @@ async function setupViewer() {
                 x: isMobile ? 0 : -0.78, y: isMobile ? 1.5 : -0.03, z: -0.12,
                 scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             })
-            .to(ring.rotation, {
-                x: (ringModel == 1) ? 0 : -Math.PI / 3, y: (ringModel == 1) ? 0 : -0.92, z: (ringModel == 1) ? Math.PI / 2 : 0,
-                scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
-            })
+            // .to(ring.rotation, {
+            //     x: (ringModel == 1) ? 0 : -Math.PI / 3, y: (ringModel == 1) ? 0 : -0.92, z: (ringModel == 1) ? Math.PI / 2 : 0,
+            //     scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            // })
             .fromTo(colorLerpValue, { x: 0 }, {
                 x: 1,
                 scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
                 , onUpdate: function () {
                     if (!usingCustomColors) {
-                        silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
-                        gold.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+                        silver?.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+                        gold?.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
                         for (const o of diamondObjects) {
                             o.material.color.lerpColors(new Color(0xffffff).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
                         }
@@ -306,10 +334,10 @@ async function setupViewer() {
                 x: -0.01, y: 0.9, z: 0.07,
                 scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
             })
-            .to(ring.rotation, {
-                x: (ringModel == 1) ? 0 : 0.92, y: (ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI / 2 : Math.PI / 3,
-                scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
-            })
+            // .to(ring.rotation, {
+            //     x: (ringModel == 1) ? 0 : 0.92, y: (ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI / 2 : Math.PI / 3,
+            //     scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            // })
             .fromTo(colorLerpValue2, { x: 0 }, {
                 x: 1,
                 scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: "top top", scrub: true, immediateRender: false }
@@ -317,8 +345,8 @@ async function setupViewer() {
 
 
                     if (!usingCustomColors) {
-                        silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
-                        gold.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+                        silver?.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+                        gold?.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
                         for (const o of diamondObjects) {
                             o.material.color.lerpColors(new Color(0x39cffe).convertSRGBToLinear(), new Color(0xf70db1).convertSRGBToLinear(), colorLerpValue2.x)
                         }
@@ -423,7 +451,7 @@ async function setupViewer() {
         tlExplore.to(position, { x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate })
             .to(target, { x: 0, y: 0, z: 0, duration: 2.5, onUpdate }, '-=2.5')
 
-            .to(ring.rotation, { x: (ringModel == 1) ? -Math.PI / 2 : 0, y: 0, z: (ringModel == 1) ? -Math.PI / 2 : 0, duration: 2.5 }, '-=2.5')
+            //.to(ring.rotation, { x: (ringModel == 1) ? -Math.PI / 2 : 0, y: 0, z: (ringModel == 1) ? -Math.PI / 2 : 0, duration: 2.5 }, '-=2.5')
             .to('.emotions--content', { opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation }, '-=2.5')
             .fromTo('.footer--menu', { opacity: 0, y: '150%' }, { opacity: 1, y: '0%', duration: 1.5 })
 
@@ -484,7 +512,7 @@ async function setupViewer() {
         tlExit.to(position, { x: -0.06, y: -1.15, z: 4.42, duration: 1.2, ease: "power4.out", onUpdate })
             .to(target, { x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out" }, '-=1.2')
             // .to(ring.rotation,{x: (ringModel == 1) ? 0 : Math.PI , y:0, z: 0}, '-=1.2') // funciona quando o default e 2
-            .to(ring.rotation, { x: (ringModel == 1) ? 0 : 0.92, y: (ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI / 2 : Math.PI / 3 }, '-=1.2')
+//            .to(ring.rotation, { x: (ringModel == 1) ? 0 : 0.92, y: (ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI / 2 : Math.PI / 3 }, '-=1.2')
             .to('.footer--menu', { opacity: 0, y: '150%' }, '-=1.2')
             .to('.emotions--content', { opacity: 1, x: '0%', duration: 0.5, ease: "power4.out" }, '-=1.2')
 
@@ -657,8 +685,10 @@ async function setupViewer() {
 
     // CHANGE MATERIAL COLOR
     function changeMaterialColor(_firstColor: Color, _secondColoor: Color) {
-        silver.material.color = _firstColor
-        gold.material.color = _secondColoor
+        metalObjects.forEach(o => {
+            o.material.color = _firstColor
+        })
+    
         usingCustomColors = true
     }
 
@@ -684,7 +714,7 @@ async function setupViewer() {
     })
 
     // CHANGE RING
-    configRing.addEventListener('click', () => {
+    configRing?.addEventListener('click', () => {
 
         gsap.to('.loader', {
             x: '0%', duration: 0.8, ease: "power4.inOut", onComplete: () => {
@@ -701,7 +731,7 @@ async function setupViewer() {
         if (ringModel == 1) {
             viewer.scene.removeSceneModels()
             await manager.addFromPath("./assets/ring2_webgi.glb")
-            gsap.to('.loader', { x: '100%', duration: 0.8, ease: "power4.inOut", delay: 1 })
+            gsap.to('.loader', { x: '100%', duration: 0.6, ease: "power4.inOut", delay: 1.5 })
 
             viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
 
@@ -710,7 +740,13 @@ async function setupViewer() {
             gold = viewer.scene.findObjectsByName('entourage')[0] as any as Mesh<BufferGeometry, MeshStandardMaterial2>
 
             // ring.rotation.set(Math.PI/2, 0, 0)
-            diamondObjects.length = 0
+            diamondObjects.length = 0;
+            metalObjects.length = 0;
+
+            for (const obj of metalObjectNames2) {
+                const o = viewer.scene.findObjectsByName(obj)[0]
+                metalObjects.push(o)
+            }
 
             for (const obj of diamondsObjectNames2) {
                 const o = viewer.scene.findObjectsByName(obj)[0]
@@ -718,13 +754,13 @@ async function setupViewer() {
                 viewer.getPlugin(DiamondPlugin)
                     .makeDiamond(o.material,
                         { normalMapRes: 256, cacheKey: o.name.split('_')[0].split('-')[1] },
-                        { isDiamond: true, color: 0xa1a1f0, refractiveIndex: 2.4 }
+                        { isDiamond: true, color: 0xffffff, refractiveIndex: 2.4 }
                     )
             }
 
             ringModel = 2
             if (camera.controls) {
-                camera.controls.autoRotate = true
+                camera.controls.autoRotate = false
                 camera.controls.minDistance = 5
                 camera.controls.maxDistance = 13
                 camera.controls.enablePan = false
