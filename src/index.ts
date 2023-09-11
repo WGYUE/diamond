@@ -243,6 +243,7 @@ async function setupViewer() {
     await timeout(1000)
 
     function introAnimation() {
+        return;
         firstLooad = false
         const introTL = gsap.timeline()
         introTL
@@ -257,6 +258,7 @@ async function setupViewer() {
     }
 
     function setupScrollAnimation() {
+        return;
         document.body.style.overflowY = "scroll"
         // document.body.removeChild(loaderElement)
 
@@ -449,12 +451,11 @@ async function setupViewer() {
     function configAnimation() {
 
         tlExplore.to(position, { x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate })
-            .to(target, { x: 0, y: 0, z: 0, duration: 2.5, onUpdate }, '-=2.5')
+        .to(target, { x: 0, y: 0, z: 0, duration: 2.5, onUpdate }, '-=2.5')
 
-            //.to(ring.rotation, { x: (ringModel == 1) ? -Math.PI / 2 : 0, y: 0, z: (ringModel == 1) ? -Math.PI / 2 : 0, duration: 2.5 }, '-=2.5')
-            .to('.emotions--content', { opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation }, '-=2.5')
-            .fromTo('.footer--menu', { opacity: 0, y: '150%' }, { opacity: 1, y: '0%', duration: 1.5 })
-
+        //.to(ring.rotation, { x: (ringModel == 1) ? -Math.PI / 2 : 0, y: 0, z: (ringModel == 1) ? -Math.PI / 2 : 0, duration: 2.5 }, '-=2.5')
+        .to('.emotions--content', { opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation }, '-=2.5')
+        .fromTo('.footer--menu', { opacity: 0, y: '150%' }, { opacity: 1, y: '0%', duration: 1.5 })
     }
 
     let colorLerpValue = { x: 0 }
@@ -555,8 +556,8 @@ async function setupViewer() {
 
         const gemCameraAnimation = gsap.timeline()
 
-        gemCameraAnimation.to(position, { x: 1.6, y: 3.66, z: 2.55, duration: 1.5, onUpdate })
-            .to(target, { x: isMobile ? 0 : -0.01, y: isMobile ? 0.5 : 0.89, z: -0.09, duration: 1.5 }, '-=1.5')
+        // gemCameraAnimation.to(position, { x: 1.6, y: 3.66, z: 2.55, duration: 1.5, onUpdate })
+        //     .to(target, { x: isMobile ? 0 : -0.01, y: isMobile ? 0.5 : 0.89, z: -0.09, duration: 1.5 }, '-=1.5')
 
         if (document.querySelector('.footer--menu li.active')) {
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
@@ -797,6 +798,9 @@ async function setupViewer() {
         }
 
     }
+    window.scrollTo(0, 100000);
+    
+    document.querySelector('.btn-customize')?.click();
 }
 
 
